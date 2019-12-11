@@ -1,0 +1,39 @@
+//3
+db.log.find().count()
+//3069
+
+//4
+db.log.find().limit(10)
+
+//5
+db.log.find({'cy': "San Francisco"})
+db.log.count({'cy': "San Francisco"})
+//11
+
+//6
+db.log.distinct('cy').length
+//745
+
+//7
+db.log.find({$or: [{
+    'a': /.*Mozilla.*/}, {
+    'a': /.*Opera.*/}
+]})
+db.log.count({$or: [{
+    'a': /.*Mozilla.*/}, {
+    'a': /.*Opera.*/}
+]})
+//2830
+
+//8
+typeof db.log.findOne({'t': {$exists: true}}).t
+db.log.find({'t': {$exists: true}}).forEach(function(entry) {
+    // your code to update an entry by _id and set the t field as a new Date() object
+    db.log.update({'_id': entry._id}, {
+        $set: {
+            't': new Date(entry.t * 1000)}}
+    )
+})
+typeof db.log.findOne({'t': {$exists: true}}).t
+
+//9
